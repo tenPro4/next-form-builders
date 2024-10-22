@@ -18,6 +18,7 @@ export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const formInstance = useRef<Webform | null>(null);
   const [formData, setFormData] = useState<any | null>(null);
+  const [formSubmission, setFormSubmission] = useState<any | null>(null);
   const [formKey, setFormKey] = useState<string>("");
 
   useEffect(() => {
@@ -32,22 +33,30 @@ export default function Home() {
       }
     };
 
-    const link1 = document.createElement('link');
-    link1.rel = 'stylesheet';
-    link1.href = 'https://unpkg.com/formiojs@latest/dist/formio.full.min.css';
+    const link1 = document.createElement("link");
+    link1.rel = "stylesheet";
+    link1.href = "https://unpkg.com/formiojs@latest/dist/formio.full.min.css";
     document.head.appendChild(link1);
 
-    const link2 = document.createElement('link');
-    link2.rel = 'stylesheet';
-    link2.href = 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css';
+    const link2 = document.createElement("link");
+    link2.rel = "stylesheet";
+    link2.href =
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css";
     document.head.appendChild(link2);
 
-    const link3 = document.createElement('link');
-    link3.rel = 'stylesheet';
-    link3.href = 'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css';
+    const link3 = document.createElement("link");
+    link3.rel = "stylesheet";
+    link3.href =
+      "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css";
     document.head.appendChild(link3);
 
     fetchData();
+    setFormSubmission({
+      data: {
+        firstName: "Jo",
+        lastName: "Sm",
+      },
+    });
     setFormKey(nanoid());
     setIsMounted(true);
   }, []);
@@ -76,10 +85,12 @@ export default function Home() {
         <Form
           key={formKey}
           form={formData}
+          submission={formSubmission}
           onChange={(submission: any) => console.log(submission)}
           formReady={(form: any) => {
             formInstance.current = form; // Capture the form instance when it's ready
           }}
+          onSubmit={(sub: any) => console.log(sub)}
         />
         <button onClick={handleClick}>Set Names</button>
       </div>
